@@ -6,11 +6,11 @@
 <title>Cheers! 義起吃飯吧!</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500;700;900&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Advent+Pro:wght@500;600;700&family=Bai+Jamjuree:wght@400;500;600;700&family=Noto+Sans+TC:wght@500;700;900&display=swap" rel="stylesheet">
 <style>
 :root{
-  --sea:#0F4C5C; --sea-deep:#0A3642; --kraft:#D9BC8C; --kraft-dark:#B8955E;
-  --ink:#2B2118; --signal:#F26B1D; --paper:#F7EBD3; --muted:#6B5A45;
+  --sea:#404040; --sea-deep:#2E2E2E; --kraft:#FFFFFF; --kraft-dark:#D6D8D9;
+  --ink:#404040; --signal:#FF801E; --paper:#FFFFFF; --muted:#7A7A7A;
   --bg:var(--sea);
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px);
@@ -24,14 +24,15 @@ html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *,*::before,*::after{box-sizing:inherit}
 body{
   margin:0; min-height:100%; background:var(--bg); color:var(--ink);
-  font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  font-family:"Bai Jamjuree","Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
   display:flex; justify-content:center;
 }
 main{width:100%; max-width:520px; padding:20px 16px 32px}
 h1{
-  color:var(--paper); font-size:1.15rem; font-weight:700; margin:4px 4px 16px;
-  letter-spacing:.04em;
+  color:var(--paper); font-family:"Advent Pro","Noto Sans TC",sans-serif; font-size:1.7rem; font-weight:700; margin:4px 4px 16px;
+  letter-spacing:.02em; line-height:1.15;
 }
+h1 .accent{color:var(--signal)}
 .tag{
   position:relative; background:var(--kraft); border-radius:6px 22px 22px 6px;
   padding:22px 22px 26px 34px;
@@ -48,10 +49,10 @@ h1{
   justify-content:space-between; align-items:center;
   margin:0 -22px 18px -34px; padding:10px 22px 10px 34px; font-size:1rem;
 }
-.stripe .round{font-family:Oswald,sans-serif; font-size:1.6rem; letter-spacing:.02em}
+.stripe .round{font-family:"Advent Pro",sans-serif; font-size:1.6rem; letter-spacing:.02em}
 .who-label{font-size:.95rem; color:var(--muted); font-weight:700}
 .who{
-  font-family:Oswald,"Noto Sans TC",sans-serif; font-weight:700;
+  font-family:"Advent Pro","Noto Sans TC",sans-serif; font-weight:700;
   font-size:clamp(2.2rem,10.5vw,3.5rem); line-height:1.05; margin:6px 0 4px; overflow-wrap:anywhere;
 }
 .who small{font-size:.35em; font-family:"Noto Sans TC",sans-serif; margin-left:.2em}
@@ -80,17 +81,17 @@ button:focus-visible, input:focus-visible{outline:3px solid var(--signal); outli
 }
 .jump button{padding:9px 10px; flex:none; background:var(--signal); color:#fff; font-size:.95rem}
 .done{
-  margin-top:4px; background:rgba(247,235,211,.1); border-radius:14px; padding:14px 16px;
+  margin-top:4px; background:rgba(255,255,255,.1); border-radius:14px; padding:14px 16px;
   color:var(--paper);
 }
 .done h2{font-size:.95rem; margin:0 0 10px; font-weight:700}
 .seats{display:flex; flex-wrap:wrap; gap:6px}
 .seat{
   padding:4px 10px; border-radius:6px;
-  font-family:Oswald,sans-serif; font-size:.95rem; letter-spacing:.02em;
-  border:1.5px solid rgba(247,235,211,.5);
+  font-family:"Bai Jamjuree",sans-serif; font-size:.95rem; letter-spacing:.02em;
+  border:1.5px solid rgba(255,255,255,.5);
 }
-.seat.drawn{background:var(--kraft); color:var(--ink); border-color:var(--kraft)}
+.seat.drawn{background:var(--kraft-dark); color:var(--ink); border-color:var(--kraft-dark)}
 .seat.left{border-style:dashed;opacity:.75;font-family:"Noto Sans TC",sans-serif}
 .seat.now{background:var(--signal); color:#fff; border-color:var(--signal)}
 .rules{color:var(--paper); opacity:.85; font-size:.88rem; line-height:1.7; margin:18px 4px 0}
@@ -105,14 +106,14 @@ button:focus-visible, input:focus-visible{outline:3px solid var(--signal); outli
 .q.placeholder{font-weight:700}
 .main-btn{
   display:block;width:100%;margin:18px 0 10px;padding:18px;font-size:1.35rem;
-  background:var(--signal);color:#fff;border-radius:14px;box-shadow:0 6px 0 #b84a0c;
+  background:var(--signal);color:#fff;border-radius:14px;box-shadow:0 6px 0 #C9620F;
 }
-.main-btn:active{transform:translateY(3px);box-shadow:0 3px 0 #b84a0c}
-.main-btn:disabled{background:var(--kraft-dark);box-shadow:none;cursor:default}
+.main-btn:active{transform:translateY(3px);box-shadow:0 3px 0 #C9620F}
+.main-btn:disabled{background:#5A5A5A;color:#D6D8D9;box-shadow:none;cursor:default}
 .sub{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .sub .nav{padding:11px 8px;font-size:.95rem}
 .hint{color:var(--paper);text-align:center;font-size:.9rem;min-height:1.3em;margin:10px 0 0}
-.sync{margin-top:18px;background:rgba(247,235,211,.1);border-radius:14px;padding:12px 16px;color:var(--paper)}
+.sync{margin-top:18px;background:rgba(255,255,255,.1);border-radius:14px;padding:12px 16px;color:var(--paper)}
 .sync summary{cursor:pointer;font-weight:700;font-size:.92rem}
 .sync-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:12px}
 .sync-row input{width:3.6em;font:inherit;text-align:center;padding:7px;border-radius:8px;border:0;background:var(--paper);color:var(--ink)}
@@ -123,20 +124,41 @@ button:focus-visible, input:focus-visible{outline:3px solid var(--signal); outli
 .sync p{font-size:.82rem;opacity:.8;margin:10px 0 0}
 .done{margin-top:18px}
 .reset-wrap{text-align:center;margin-top:22px;color:var(--paper)}
-.reset{background:transparent;color:var(--paper);border:2px dashed rgba(247,235,211,.6);padding:11px 18px;font-size:.95rem}
+.reset{background:transparent;color:var(--paper);border:2px dashed rgba(255,255,255,.6);padding:11px 18px;font-size:.95rem}
 .reset-wrap p{font-size:.82rem;opacity:.75;margin:8px 0 0}
 .mode{display:flex;align-items:center;gap:8px;color:var(--paper);font-size:.88rem;margin:-6px 4px 14px;opacity:.9}
 .mode .dot{width:9px;height:9px;border-radius:50%;background:var(--kraft-dark);flex:none}
 .mode.live .dot{background:#5BD18B;box-shadow:0 0 0 3px rgba(91,209,139,.25)}
 .follow-only .host-ctl{display:none!important}
-.preview-btn{display:none;margin:-8px 4px 14px;background:transparent;color:var(--paper);border:1.5px solid rgba(247,235,211,.6);border-radius:999px;padding:6px 14px;font-size:.85rem}
+.preview-btn{display:none;margin:-8px 4px 14px;background:transparent;color:var(--paper);border:1.5px solid rgba(255,255,255,.6);border-radius:999px;padding:6px 14px;font-size:.85rem}
 .is-host .preview-btn{display:inline-block}
 .synced .local-ctl{display:none!important}
+
+/* ===== 明亮版（企業色） ===== */
+:root, :root[data-theme="dark"]{ --bg:#F3F4F4; }
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --bg:#F3F4F4; } }
+h1{color:var(--ink)}
+.mode{color:var(--ink);opacity:.85}
+.hint{color:var(--muted)}
+.arrow{color:var(--signal);opacity:1}
+.tag{box-shadow:0 6px 18px rgba(64,64,64,.10);border:1px solid #E6E7E8}
+.nav{background:#fff;color:var(--ink);border:1.5px solid var(--kraft-dark)}
+.nav:disabled{opacity:.45}
+.main-btn:disabled{background:var(--kraft-dark);color:#7A7A7A}
+.done,.sync{background:#fff;color:var(--ink);border:1px solid #E6E7E8;box-shadow:0 2px 8px rgba(64,64,64,.05)}
+.sync p{opacity:1;color:var(--muted)}
+.seat{border-color:var(--kraft-dark)}
+.seat.left{color:var(--muted);border-color:#BFC1C2;opacity:1}
+.sync-row .ghost{color:var(--ink);border-color:var(--ink)}
+.sync-row input,.sync-row select{border:1.5px solid var(--kraft-dark)}
+.reset-wrap{color:var(--muted)}
+.reset{color:var(--muted);border-color:#BFC1C2}
+.preview-btn{color:var(--ink);border-color:#BFC1C2}
 </style>
 </head>
 <body>
 <main>
-  <h1>Cheers! 義起吃飯吧!</h1>
+  <h1><span class="accent">Cheers!</span> 義起吃飯吧!</h1>
   <div class="mode" id="mode"><span class="dot"></span><span id="modeText">連線中⋯</span></div>
 
   <section class="tag" id="tagName" aria-live="polite">
