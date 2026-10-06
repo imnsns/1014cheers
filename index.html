@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cheers! 義起吃飯吧!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500;700;900&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sea:#0F4C5C; --sea-deep:#0A3642; --kraft:#D9BC8C; --kraft-dark:#B8955E;
+  --ink:#2B2118; --signal:#F26B1D; --paper:#F7EBD3; --muted:#6B5A45;
+  --bg:var(--sea);
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --bg:var(--sea-deep); }
+}
+:root[data-theme="dark"]{ --bg:var(--sea-deep); }
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{
+  margin:0; min-height:100%; background:var(--bg); color:var(--ink);
+  font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  display:flex; justify-content:center;
+}
+main{width:100%; max-width:520px; padding:20px 16px 32px}
+h1{
+  color:var(--paper); font-size:1.15rem; font-weight:700; margin:4px 4px 16px;
+  letter-spacing:.04em;
+}
+.tag{
+  position:relative; background:var(--kraft); border-radius:6px 22px 22px 6px;
+  padding:22px 22px 26px 34px;
+  box-shadow:0 10px 24px rgba(0,0,0,.28);
+}
+.stripe{position:relative}
+.stripe::before{ /* eyelet: centred in each card's header bar, so both cards match */
+  content:""; position:absolute; left:12px; top:50%; width:12px; height:12px;
+  margin-top:-6px; border-radius:50%; background:var(--bg);
+  box-shadow:0 0 0 3px var(--kraft-dark);
+}
+.stripe{
+  background:var(--signal); color:#fff; font-weight:900; display:flex;
+  justify-content:space-between; align-items:center;
+  margin:0 -22px 18px -34px; padding:10px 22px 10px 34px; font-size:1rem;
+}
+.stripe .round{font-family:Oswald,sans-serif; font-size:1.6rem; letter-spacing:.02em}
+.who-label{font-size:.95rem; color:var(--muted); font-weight:700}
+.who{
+  font-family:Oswald,"Noto Sans TC",sans-serif; font-weight:700;
+  font-size:clamp(2.2rem,10.5vw,3.5rem); line-height:1.05; margin:6px 0 4px; overflow-wrap:anywhere;
+}
+.who small{font-size:.35em; font-family:"Noto Sans TC",sans-serif; margin-left:.2em}
+.cat:empty{display:none}
+.cat{
+  display:inline-block; border:2px solid var(--ink); border-radius:999px;
+  padding:2px 12px; font-weight:700; font-size:.95rem;
+}
+.q{font-size:clamp(1.35rem,6vw,1.75rem); font-weight:900; line-height:1.45; margin:12px 0 4px}
+.alt{font-size:.85rem; color:var(--muted); min-height:1.2em}
+.controls{display:grid; grid-template-columns:1fr 1.3fr 1fr; gap:10px; margin:14px 0 26px; align-items:stretch}
+.q-tag .stripe{background:var(--sea); }
+.q-tag .q{margin-top:14px}
+button{
+  font:inherit; font-weight:700; border:0; border-radius:12px; padding:14px 8px;
+  cursor:pointer; font-size:1.05rem;
+}
+button:focus-visible, input:focus-visible{outline:3px solid var(--signal); outline-offset:2px}
+.nav{background:var(--paper); color:var(--ink)}
+.nav:disabled{opacity:.4; cursor:default}
+.swap{background:transparent; color:var(--paper); border:2px solid var(--paper)}
+.jump{display:flex; gap:6px; align-items:stretch}
+.jump input{
+  width:100%; min-width:0; font:inherit; font-size:1.1rem; text-align:center; padding:8px;
+  border-radius:10px; border:0; background:var(--paper); color:var(--ink);
+}
+.jump button{padding:9px 10px; flex:none; background:var(--signal); color:#fff; font-size:.95rem}
+.done{
+  margin-top:4px; background:rgba(247,235,211,.1); border-radius:14px; padding:14px 16px;
+  color:var(--paper);
+}
+.done h2{font-size:.95rem; margin:0 0 10px; font-weight:700}
+.seats{display:flex; flex-wrap:wrap; gap:6px}
+.seat{
+  padding:4px 10px; border-radius:6px;
+  font-family:Oswald,sans-serif; font-size:.95rem; letter-spacing:.02em;
+  border:1.5px solid rgba(247,235,211,.5);
+}
+.seat.drawn{background:var(--kraft); color:var(--ink); border-color:var(--kraft)}
+.seat.left{border-style:dashed;opacity:.75;font-family:"Noto Sans TC",sans-serif}
+.seat.now{background:var(--signal); color:#fff; border-color:var(--signal)}
+.rules{color:var(--paper); opacity:.85; font-size:.88rem; line-height:1.7; margin:18px 4px 0}
+.rules p{margin:0 0 6px}
+@media (prefers-reduced-motion:no-preference){
+  .tag.flip{animation:flip .35s ease}
+  @keyframes flip{from{transform:rotate(-2deg) translateY(6px);opacity:.4}to{transform:none;opacity:1}}
+}
+.arrow{text-align:center;color:var(--paper);opacity:.6;margin:8px 0;font-size:.9rem}
+.placeholder{color:var(--muted)}
+.who.placeholder{font-size:clamp(1.8rem,9vw,2.6rem)}
+.q.placeholder{font-weight:700}
+.main-btn{
+  display:block;width:100%;margin:18px 0 10px;padding:18px;font-size:1.35rem;
+  background:var(--signal);color:#fff;border-radius:14px;box-shadow:0 6px 0 #b84a0c;
+}
+.main-btn:active{transform:translateY(3px);box-shadow:0 3px 0 #b84a0c}
+.main-btn:disabled{background:var(--kraft-dark);box-shadow:none;cursor:default}
+.sub{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sub .nav{padding:11px 8px;font-size:.95rem}
+.hint{color:var(--paper);text-align:center;font-size:.9rem;min-height:1.3em;margin:10px 0 0}
+.sync{margin-top:18px;background:rgba(247,235,211,.1);border-radius:14px;padding:12px 16px;color:var(--paper)}
+.sync summary{cursor:pointer;font-weight:700;font-size:.92rem}
+.sync-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:12px}
+.sync-row input{width:3.6em;font:inherit;text-align:center;padding:7px;border-radius:8px;border:0;background:var(--paper);color:var(--ink)}
+.sync-row button{background:var(--signal);color:#fff;padding:8px 16px;font-size:.95rem}
+.sync-row .ghost{background:transparent;color:var(--paper);border:2px solid var(--paper)}
+.sync-row button:disabled{opacity:.4;cursor:default}
+.sync-row select{font:inherit;padding:7px 8px;border-radius:8px;border:0;background:var(--paper);color:var(--ink);min-width:8em}
+.sync p{font-size:.82rem;opacity:.8;margin:10px 0 0}
+.done{margin-top:18px}
+.reset-wrap{text-align:center;margin-top:22px;color:var(--paper)}
+.reset{background:transparent;color:var(--paper);border:2px dashed rgba(247,235,211,.6);padding:11px 18px;font-size:.95rem}
+.reset-wrap p{font-size:.82rem;opacity:.75;margin:8px 0 0}
+.mode{display:flex;align-items:center;gap:8px;color:var(--paper);font-size:.88rem;margin:-6px 4px 14px;opacity:.9}
+.mode .dot{width:9px;height:9px;border-radius:50%;background:var(--kraft-dark);flex:none}
+.mode.live .dot{background:#5BD18B;box-shadow:0 0 0 3px rgba(91,209,139,.25)}
+.follow-only .host-ctl{display:none!important}
+.preview-btn{display:none;margin:-8px 4px 14px;background:transparent;color:var(--paper);border:1.5px solid rgba(247,235,211,.6);border-radius:999px;padding:6px 14px;font-size:.85rem}
+.is-host .preview-btn{display:inline-block}
+.synced .local-ctl{display:none!important}
+</style>
+</head>
+<body>
+<main>
+  <h1>Cheers! 義起吃飯吧!</h1>
+  <div class="mode" id="mode"><span class="dot"></span><span id="modeText">連線中⋯</span></div>
+
+  <section class="tag" id="tagName" aria-live="polite">
+    <div class="stripe"><span>下一位</span><span class="round" id="nRound">–</span></div>
+    <div class="who-label" id="whoLabel">&nbsp;</div>
+    <div class="who" id="who"></div>
+  </section>
+
+  <div class="arrow" aria-hidden="true">▼</div>
+
+  <section class="tag q-tag" id="tagQ" aria-live="polite">
+    <div class="stripe"><span>下一題</span><span class="round" id="qRound">–</span></div>
+    <span class="cat" id="cat"></span>
+    <p class="q" id="q"></p>
+  </section>
+
+  <button class="main-btn host-ctl" id="mainBtn">抽人</button>
+  <div class="sub host-ctl">
+    <button class="nav" id="undo">上一步</button>
+    <button class="nav" id="swap">換一題</button>
+  </div>
+  <p class="hint" id="hint"></p>
+
+  <details class="sync host-ctl" id="backup">
+    <summary>備用功能：跳過、移除或新增名字</summary>
+    <div class="sync-row">
+      <button id="later" class="ghost">這位稍後再抽</button>
+      <button id="remove" class="ghost">這位今天不在</button>
+    </div>
+    <p>抽到名字、還沒抽題目時才能使用。「稍後再抽」會把這位放回還沒抽的名單；「今天不在」會直接移除。</p>
+    <div class="sync-row">
+      <input id="newName" type="text" placeholder="輸入名字" aria-label="新增名字" style="width:9em;text-align:left">
+      <button id="add">新增到最後</button>
+    </div>
+    <p>名單漏掉的人或臨時來賓，可以加到最後面。</p>
+    <div class="sync-row">
+      <select id="leftSel" aria-label="選擇先離開的人"></select>
+      <button id="leftBtn">已先離開，跳過</button>
+    </div>
+    <p>有人提早離開時，從還沒抽到的名單中選出他，之後就不會抽到。</p>
+  </details>
+
+
+  <section class="done">
+    <h2>已抽到的人（橘色是目前這位）</h2>
+    <div class="seats" id="seats"></div>
+  </section>
+
+
+  <div class="reset-wrap host-ctl">
+    <button id="reset" class="reset">↺ 重新開始（清除所有進度）</button>
+    <p>測試完或要重來時使用，名單和題目會回到原本的狀態。</p>
+  </div>
+</main>
+
+<script>
+const NAMES = ["Arthur", "Annie", "Jessie", "Tina", "Derrick", "Rosa", "Katrina", "Yvette", "Alice.Chu", "Mandy", "Lena", "Anna", "Emily", "Alice.Chung", "Cindy", "Ashley", "James", "Raku"];
+const TOTAL = NAMES.length;
+const QUESTIONS = [
+  ["現場任務", "請找到一位跟自己同樣是火／水／土／風象星座的同事，跟他握手"],
+  ["美食生活", "最想推薦給大家的一間餐廳？"],
+  ["現場任務", "請於現場找一位同事合照一張"],
+  ["工作趣事", "最近在工作上學到一件有幫助的小技巧或工具？"],
+  ["興趣喜好", "最近一次出國是去哪裡？最好玩或最印象深刻的地方？"],
+  ["認識自己", "用三個詞形容自己，並說明原因"],
+  ["興趣喜好", "有沒有一個一直想學但還沒開始的技能？"],
+  ["興趣喜好", "今年最想完成的一件事？"],
+  ["工作趣事", "如果要向朋友介紹我們公司是做什麼的，你會怎麼介紹？"],
+  ["同事之間", "你的工作最有成就感的地方是什麼？"],
+  ["興趣喜好", "手機除了通訊軟體、內建軟體以外，說一個你最常用的App及用途"],
+  ["假如題", "若你意外得到了一百萬，你會怎麼使用它？"],
+  ["美食生活", "午餐最常吃什麼？公司周遭最推薦的店？"],
+  ["回憶時光", "第一份打工是什麼工作？為什麼會選擇它？"],
+  ["工作趣事", "你覺得你的工作最難的地方是什麼？你是怎麼克服或解決的？"],
+  ["回憶時光", "學生時代參加過什麼社團？"],
+  ["興趣喜好", "最想去的國家是哪一國？為什麼？"],
+  ["工作趣事", "若朋友詢問你的工作內容都做些什麼，你會怎麼介紹？"],
+  ["工作趣事", "你辦公桌上最不能少的一樣東西是什麼？"],
+  ["認識自己", "想對五年前的自己說什麼？"],
+  ["同事之間", "選出今天在場同事中，你最喜歡的一套穿搭，並說說原因"],
+  ["生活日常", "家裡有養寵物嗎？介紹一下牠！若沒有，你是貓派還是狗派？或是有想養什麼寵物？"]
+];
+
+// Fixed seed: every phone produces the same order.
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function shuffle(arr, rand){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(rand()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+const rand = mulberry32(20261001);
+const seatOrder = shuffle(NAMES, rand);
+const qOrder = shuffle(QUESTIONS.map((_,i)=>i), rand);
+
+// step: 0 = 尚未開始; odd = 剛抽人、等待抽題; even(>0) = 題目已出、等待抽人
+const fresh = () => ({n:0, q:0, waitQ:false, hist:[], order:seatOrder.slice()});
+let st = fresh();
+// mode: "pending" (connecting) | "host" (controls, writes shared state) | "follow" (read-only, live) | "local" (no sync; old behaviour)
+let mode = "pending", stateRef = null, writing = false, dirty = false;
+function loadLocal(){
+  try{
+    const saved = JSON.parse(localStorage.getItem("dinner-draw-v3") || "null");
+    if(saved && typeof saved.n==="number"){ st = saved; if(!Array.isArray(st.order)) st.order=seatOrder.slice(); if(!Array.isArray(st.hist)) st.hist=[]; }
+  }catch(e){}
+}
+function valid(d){ return d && typeof d.n==="number" && typeof d.q==="number" && Array.isArray(d.order) && d.order.every(x=>typeof x==="string"); }
+const QN = QUESTIONS.length;
+const $ = id => document.getElementById(id);
+const seatsEl = $("seats");
+function buildSeats(){
+  seatsEl.innerHTML="";
+  st.order.slice(0,st.n).forEach(n=>{const d=document.createElement("div");d.className="seat";d.textContent=n;d.dataset.n=n;seatsEl.appendChild(d)});
+  const left=st.order.length-st.n;
+  const m=document.createElement("div"); m.className="seat left";
+  m.textContent = st.n===0 ? "還沒開始抽" : (left>0 ? "還有 "+left+" 位" : "全部抽完");
+  seatsEl.appendChild(m);
+}
+function saveLocal(){try{localStorage.setItem("dinner-draw-v3",JSON.stringify(st))}catch(e){}}
+// ---- 即時同步（ntfy.sh，免帳號）----
+const TOPIC = "cheers-wto-jsvh10uok3fphxi2";          // 頻道名稱：主持人和同事必須相同
+const HOST_KEY = "adpbk6dr";       // 主持人網址加上 ?host=這串 才會出現按鈕
+const NTFY = "https://ntfy.sh/" + TOPIC;
+let sending=false, pending=false;
+async function pushShared(){
+  if(sending){ pending=true; return; }
+  sending=true;
+  try{
+    do{
+      pending=false;
+      const body=JSON.stringify({v:1,t:Date.now(),n:st.n,q:st.q,waitQ:st.waitQ,order:st.order});
+      let ok=false;
+      for(let i=0;i<3 && !ok;i++){
+        try{ const r=await fetch(NTFY,{method:"POST",body}); ok=r.ok; }catch(e){}
+        if(!ok) await new Promise(r=>setTimeout(r,800*(i+1)));
+      }
+      setLink(ok);
+    }while(pending);
+  }finally{ sending=false; }
+}
+function setLink(ok){
+  if(mode!=="host") return;
+  modeText.textContent = ok ? "你是主持人：同事的畫面會即時同步" : "網路不穩，同步失敗，請再按一次";
+  modeEl.classList.toggle("live", ok);
+}
+function commit(){ if(mode==="host"){ saveLocal(); pushShared(); } }
+function pop(id){const t=$(id);t.classList.remove("flip");void t.offsetWidth;t.classList.add("flip")}
+function snapshot(){return {n:st.n,q:st.q,waitQ:st.waitQ,order:st.order.slice()}}
+
+function draw(){
+  const who=$("who"), q=$("q");
+  // 人
+  if(st.n===0){
+    $("nRound").textContent="–"; $("whoLabel").innerHTML="&nbsp;";
+    who.textContent="準備好了嗎？"; who.classList.add("placeholder");
+  }else{
+    $("nRound").textContent=st.n; $("whoLabel").textContent="有請";
+    who.textContent=st.order[st.n-1]; who.classList.remove("placeholder");
+  }
+  // 題
+  if(st.q===0 || st.waitQ){
+    $("qRound").textContent = st.waitQ ? "?" : "–";
+    $("cat").textContent="";
+    q.textContent = st.n===0 ? "題目即將揭曉⋯" : "請按下方按鈕抽題目";
+    q.classList.add("placeholder");
+  }else{
+    const idx=(st.q-1)%QN, [c,t]=QUESTIONS[qOrder[idx]];
+    $("qRound").textContent=idx+1; $("cat").textContent=c; q.textContent=t; q.classList.remove("placeholder");
+  }
+  // 按鈕
+  const T=st.order.length;
+  const btn=$("mainBtn"), allDone = st.n>=T && !st.waitQ;
+  if(allDone){btn.textContent="全部抽完了 🎉"; btn.disabled=true}
+  else{btn.disabled=false; btn.textContent = st.waitQ ? "抽題目" : (st.n===0 ? "開始！抽第一位" : "抽下一位")}
+  $("swap").disabled = st.waitQ || st.q===0;
+  $("undo").disabled = st.hist.length===0;
+  $("hint").textContent = allDone ? "謝謝大家的分享！" : (st.waitQ ? "下一步：抽題目" : (st.n===0 ? "" : "下一步：抽下一位"));
+  // 名單
+  buildSeats();
+  const drawn=new Set(st.order.slice(0,st.n));
+  seatsEl.querySelectorAll(".seat").forEach(s=>{
+    s.classList.toggle("drawn",drawn.has(s.dataset.n));
+    s.classList.toggle("now",st.n>0 && s.dataset.n===st.order[st.n-1]);
+  });
+  const canSkip = st.n>0 && st.waitQ;
+  $("later").disabled = !canSkip || st.n>=T;
+  $("remove").disabled = !canSkip;
+  const sel=$("leftSel"), rest=st.order.slice(st.n).sort((a,b)=>a.localeCompare(b));
+  sel.innerHTML = rest.length ? rest.map(n=>'<option value="'+n.replace(/"/g,'&quot;')+'">'+n.replace(/</g,'&lt;')+'</option>').join("") : '<option value="">（沒有未抽的人）</option>';
+  $("leftBtn").disabled = rest.length===0;
+}
+function render(){ draw(); commit(); }
+function push(){st.hist.push(snapshot()); if(st.hist.length>100) st.hist.shift()}
+
+$("mainBtn").onclick=()=>{
+  if(st.waitQ){ push(); st.q++; st.waitQ=false; pop("tagQ"); }
+  else if(st.n<st.order.length){
+    push();
+    // 當下隨機抽：從還沒抽到的人裡挑一位
+    const j = st.n + Math.floor(Math.random()*(st.order.length-st.n));
+    [st.order[st.n], st.order[j]] = [st.order[j], st.order[st.n]];
+    st.n++; st.waitQ=true; pop("tagName");
+  }
+  render();
+};
+$("swap").onclick=()=>{ if(st.waitQ||st.q===0) return; push(); st.q++; pop("tagQ"); render(); };
+$("undo").onclick=()=>{ const h=st.hist.pop(); if(h){st.n=h.n;st.q=h.q;st.waitQ=h.waitQ; if(h.order) st.order=h.order} render(); };
+$("later").onclick=()=>{
+  if(!(st.n>0&&st.waitQ)||st.n>=st.order.length) return;
+  push(); const [who]=st.order.splice(st.n-1,1); st.order.push(who); pop("tagName"); render();
+  $("hint").textContent=who+" 已移到最後，改抽下一位";
+};
+$("remove").onclick=()=>{
+  if(!(st.n>0&&st.waitQ)) return;
+  push(); const [who]=st.order.splice(st.n-1,1);
+  if(st.n>st.order.length){ st.n=st.order.length; st.waitQ=false; }
+  pop("tagName"); render(); $("hint").textContent=who+" 已從名單移除";
+};
+$("add").onclick=()=>{
+  const v=$("newName").value.trim(); if(!v) return;
+  if(st.order.includes(v)){ $("hint").textContent="名單裡已經有 "+v; return; }
+  push(); st.order.push(v); $("newName").value=""; render(); $("hint").textContent=v+" 已加入名單最後";
+};
+$("leftBtn").onclick=()=>{
+  const v=$("leftSel").value; const i=st.order.indexOf(v);
+  if(!v || i<st.n) return;
+  push(); st.order.splice(i,1); render(); $("hint").textContent=v+" 已先離開，之後不會抽到";
+};
+let resetArmed=null;
+$("reset").onclick=()=>{
+  const b=$("reset");
+  if(!resetArmed){
+    b.textContent="⚠️ 再按一次確認（所有人畫面都會回到開頭）";
+    b.style.borderColor="var(--signal)"; b.style.color="#fff"; b.style.background="var(--signal)";
+    resetArmed=setTimeout(disarmReset,4000);
+    return;
+  }
+  disarmReset();
+  st=fresh(); render(); pop("tagName"); pop("tagQ");
+  $("hint").textContent="已重新開始";
+};
+function disarmReset(){
+  clearTimeout(resetArmed); resetArmed=null;
+  const b=$("reset"); b.textContent="↺ 重新開始（清除所有進度）"; b.style.cssText="";
+}
+$("newName").addEventListener("keydown",e=>{if(e.key==="Enter")$("add").click()});
+
+// ---- Mode / sync ----
+const modeEl=$("mode"), modeText=$("modeText");
+function setMode(m, text, live){
+  mode=m; modeText.textContent=text; modeEl.classList.toggle("live",!!live);
+  document.body.classList.toggle("follow-only", m==="follow");
+  document.body.classList.toggle("synced", m==="host"||m==="follow");
+}
+const ctlIds=["mainBtn","undo","swap"];
+const isHostLink = new URLSearchParams(location.search).get("host")===HOST_KEY;
+if(isHostLink){
+  loadLocal();
+  setMode("host","你是主持人：連線中⋯",false);
+  draw(); pushShared();   // 一打開就把目前進度送出，讓同事對齊
+}else{
+  setMode("follow","連線中⋯",false);
+  draw(); $("hint").textContent="";
+  $("who").textContent="等待主持人⋯"; $("who").classList.add("placeholder");
+  let lastT=0;
+  const es=new EventSource(NTFY+"/sse?since=12h");
+  es.onopen=()=>{ modeText.textContent="已連線・跟著主持人畫面自動更新"; modeEl.classList.add("live"); };
+  es.onerror=()=>{ modeText.textContent="重新連線中⋯"; modeEl.classList.remove("live"); };
+  es.onmessage=e=>{
+    let d; try{ d=JSON.parse(JSON.parse(e.data).message); }catch(err){ return; }
+    if(!valid(d) || d.v!==1 || !(d.t>lastT)) return;
+    if(!d.order.every(x=>typeof x==="string") || d.order.length>60 || d.n>d.order.length) return;
+    lastT=d.t;
+    const changedN = d.n!==st.n, changedQ = d.q!==st.q || !!d.waitQ!==st.waitQ;
+    st={n:d.n,q:d.q,waitQ:!!d.waitQ,order:d.order,hist:[]};
+    draw(); $("hint").textContent="";
+    if(changedN) pop("tagName"); if(changedQ) pop("tagQ");
+    modeText.textContent="已連線・跟著主持人畫面自動更新"; modeEl.classList.add("live");
+  };
+}
+</script>
+</body>
+</html>
