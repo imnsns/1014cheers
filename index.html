@@ -2,6 +2,8 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
+<meta name="color-scheme" content="only light">
+<meta name="darkreader-lock">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Cheers! 義起吃飯吧!</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -135,6 +137,7 @@ button:focus-visible, input:focus-visible{outline:3px solid var(--signal); outli
 .synced .local-ctl{display:none!important}
 
 /* ===== 明亮版（企業色） ===== */
+:root{color-scheme:only light}
 :root, :root[data-theme="dark"]{ --bg:#F3F4F4; }
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --bg:#F3F4F4; } }
 h1{color:var(--ink)}
